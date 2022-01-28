@@ -1,0 +1,34 @@
+GET http://localhost:5000/login
+
+###
+
+POST http://localhost:5000/user
+Content-Type: application/json
+
+{
+    "name":"sanket",
+    "username": "sanket17",
+    "password":"1234"
+}
+
+###
+
+POST http://localhost:5000/login
+Content-Type: application/json
+
+{
+    "username": "sanket17",
+    "password":"1234"
+}
+
+###
+GET http://localhost:5000/property
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MWYzZjk1ZWFjMDM5ZjRhOTg4MjRiNzYiLCJuYW1lIjoic2Fua2V0IiwidXNlcm5hbWUiOiJzYW5rZXQxNyIsInBhc3N3b3JkIjoiJDJiJDEwJEU1bTdwMmpDenM3ZFZHNTNHTEtWT09qTlVTWUV6SjJVMTIyaHdZNXRPL0RLamlxVWdYVy9HIiwiaWF0IjoxNjQzMzk5NDQ2LCJleHAiOjE2NDMzOTk1MDZ9.jUuEgdczHYiEzmBycMQsDY1IbdEzxZWdI5g2tL9csYY
+###
+
+POST http://localhost:5000/token
+Content-Type: application/json
+
+{
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MWYzZjk1ZWFjMDM5ZjRhOTg4MjRiNzYiLCJuYW1lIjoic2Fua2V0IiwidXNlcm5hbWUiOiJzYW5rZXQxNyIsInBhc3N3b3JkIjoiJDJiJDEwJEU1bTdwMmpDenM3ZFZHNTNHTEtWT09qTlVTWUV6SjJVMTIyaHdZNXRPL0RLamlxVWdYVy9HIiwiaWF0IjoxNjQzMzk5NTE3fQ.w2eb42GanVUPjphJTg98Rp-S5v12qBPnhTSdfV7z59w"
+}
