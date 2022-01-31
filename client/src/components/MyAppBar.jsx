@@ -13,13 +13,41 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import Icon from "../images/Icon.png"
-import Capture from "../images/Capture.jpg"
-import { ThemeProvider } from '@material-ui/core/styles';
+import { useNavigate } from "react-router-dom";
+import { useEffect } from 'react';
+import axios from "axios"
+import { requestAccessToken } from '../Utils/requestAccessToken';
+
 
 const pages = ['Buy', 'Sell', 'Rent']; 
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 function MyAppBar() {
+  const navigate = useNavigate();
+
+  useEffect(async () => {
+    console.log("hello")
+    const token = localStorage.getItem("accessToken");
+    console.log(token)
+    
+    try {
+      if(token === "null") throw "null"
+      const resp = await axios.get("/property", {headers : {
+        Authorization : "Bearer " + token
+      }})
+    }
+    catch(err) {
+      console.log("in error")
+      localStorage.setItem("accessToken", null);
+      requestAccessToken().then((msg) => {
+        console.log("req access token resp", msg);
+        if(! msg) navigate("/login");
+      });
+    }
+  })
+
+ 
+
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -37,6 +65,11 @@ function MyAppBar() {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
+  // const token = localStorage.getItem("accessToken");
+  // if(token === null) {
+  //   navigate("/login")
+  // }
 
   return (
     
@@ -118,7 +151,7 @@ function MyAppBar() {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Suraj" src="/static/images/avatar/2.jpg" />
+                <Avatar alt="Suraj" src="" />
               </IconButton>
             </Tooltip>
             <Menu 

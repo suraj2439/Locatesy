@@ -1,0 +1,11 @@
+.login,
+.image {
+  min-height: 100vh;
+}
+.bg-image1 {
+  /* https://eliteconinternational.com/wp-content/uploads/2020/10/real.jpg */
+  /* "https://st2.depositphotos.com/1194063/6307/i/950/depositphotos_63079189-stock-photo-discussion-with-a-real-estate.jpg" */
+  background-image: url('https://blog.ipleaders.in/wp-content/uploads/2018/12/real_estate.jpg');
+  background-size: cover;
+  background-position: center right;
+}
