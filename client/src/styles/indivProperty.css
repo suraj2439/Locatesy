@@ -1,0 +1,129 @@
+.indivProperty {
+    background-color:  	#E8E8E8;
+    padding-bottom: 15%;
+}
+
+.propertyImage {
+    opacity: 40%;
+    width: 100%;
+    height: 40vh;
+    object-fit: cover;
+}
+
+.propertyContainer {
+    position: relative;
+}
+
+.propertyTitle {
+    bottom: 10%;
+    margin-left: 5%;
+    position: absolute;
+    color: white;
+    letter-spacing: 1px;
+}
+
+.overlay {
+    position: absolute; 
+    bottom: 0; 
+    background: rgb(0, 0, 0);
+    background: rgba(0, 0, 0, 0.5); /* Black see-through */
+    color: #f1f1f1; 
+    width: 100%;
+    height: 100%;
+    transition: .5s ease;
+    opacity:1;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    /* filter: blur(300px); */
+    background: rgba(0, 0, 0, 0.35);
+    
+}
+
+.propertyTitle .descr {
+    font-size: 1.5vw;
+    text-align: left;
+}
+
+.propertyTitle .name {
+    font-size: 2.5vw;
+    text-align: left;
+}
+
+.propertyTitle .location {
+    font-size: 0.7;
+    text-align: left;
+    opacity: 80%;
+}
+
+.propertyDetails {
+    text-align: left;
+    margin-left: 10%;
+    margin-top: 5vh;
+}
+
+.price{
+    display: inline-block;
+    width: 28%;
+    vertical-align: top;
+}
+
+.propertyStatus {
+    display: inline-block;
+    width: 27%;
+    vertical-align: middle;
+    padding-top: 0.7%;
+}
+
+.area {
+    display: inline-block;
+    width: 17%;
+    vertical-align: top;
+    margin-top: 0.7%;
+}
+
+.propertyDetails .priceRange {
+    font-size: 2.5vw;
+}
+
+.propertyDetails .basePrice {
+    font-size: 1.2vw;
+    opacity: 80%;
+}
+
+.propertyDetails .size {
+    font-size: 1.6vw;
+}
+
+.propertyDetails .areaType {
+    font-size: 1.1vw;
+    opacity: 80%;
+}
+
+.propertyStatus .status {
+    font-size: 1.4vw;
+}
+
+.propertyStatus .possession {
+    font-size: 1.1vw;
+    opacity: 80%;
+}
+
+
+.highlights {
+    text-align: left;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 3%;
+}
+
+.btns {
+    margin-left: 10%;
+    text-align: left;
+    margin-top: 3%;
+}
+
+.btns .map {
+    margin-left: 3%;
+}

@@ -46,7 +46,6 @@ function MyAppBar() {
 
   const classes1 = useStyles();
   useEffect(async () => {
-    console.log("hello");
     const token = localStorage.getItem("accessToken");
     console.log(token);
 

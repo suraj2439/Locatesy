@@ -37,6 +37,14 @@ const userSchema = new mongoose.Schema({
 
 const User = mongoose.model("User", userSchema);
 
+// const stud = new User({
+//   _id: 3,
+//   name: "sanket",
+//   username: "sanket17",
+//   password: "123"
+// });
+// stud.save().then(() => console.log("One entry added"));
+
 const rentPropertySchema = new mongoose.Schema({
   p_id: Number, // property id
   propertyName: String,

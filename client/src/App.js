@@ -7,6 +7,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
 import LoginPage from "./components/LoginPage";
 import MyAppBar from "./components/MyAppBar";
+import IndivProperty from "./components/IndivProperty"
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import HomePage from "./components/homePage";
 
@@ -22,12 +23,11 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <TMP/>
-        {/* <Route exact path="/" render={() => {window.location.href="abc.html"}} /> */}
-        {/* {ReactDOM.render(<p>hello world</p>, document.getElementById("map"))} */}
+        {/* <TMP/> */}
+        <IndivProperty/>
         {/* <Router>
           <Routes>
-          <Route exact path="/" render={() => {window.location.href="abc.html"}} />
+            <Route exact path="/" element={<HomePage />}></Route>
 
             <Route path="/login" element={<LoginPage />}></Route>
           </Routes>
