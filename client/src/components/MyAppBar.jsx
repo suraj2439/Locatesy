@@ -28,7 +28,9 @@ const useStyles = makeStyles((theme) => ({
   header: {
     backgroundImage: `url(${bImg})`,
     backgroundRepeat: "no-repeat",
-    backgroundSize: "cover",
+    backgroundSize: "contain",
+    width: "100%",
+    height: "auto",
     filter: "brightness(0.9)",
   },
 }));
@@ -89,9 +91,9 @@ function MyAppBar() {
   // }
 
   return (
-    <div className={classes1.header} style={{ minHeight: "40rem" }}>
+    <div className={classes1.header} style={{ height: "50vw" }}>
       <AppBar
-        position="static"
+        position="sticky"
         style={{
           boxShadow: "none",
           color: "black",

@@ -6,6 +6,7 @@ import Grid from "@mui/material/Grid";
 import MyAppBar from "./MyAppBar";
 import Property from "./property";
 import Container from "@mui/material/Container";
+import "../styles/homePage.css";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -17,7 +18,7 @@ const Item = styled(Paper)(({ theme }) => ({
 
 export default function homePage() {
   return (
-    <div>
+    <div className="backGround">
       <MyAppBar />
 
       <Container sx={{ mt: "2rem" }} fixed>
