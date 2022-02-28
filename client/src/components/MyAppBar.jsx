@@ -41,7 +41,7 @@ const styles = {
   },
 };
 
-function MyAppBar() {
+function MyAppBar({isBg}) {
   const navigate = useNavigate();
 
   const classes1 = useStyles();
@@ -90,7 +90,7 @@ function MyAppBar() {
   // }
 
   return (
-    <div className={classes1.header} style={{ height: "50vw" }}>
+    <div className={isBg ? classes1.header : ""} style={{ height: isBg? "50vw" : "0" }}>
       <AppBar
         position="sticky"
         style={{

@@ -23,15 +23,16 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        {/* <TMP/> */}
-        <IndivProperty/>
-        {/* <Router>
+        
+        {/* <TMP address={"surat"}/> */}
+        {/* <IndivProperty/> */}
+        <Router>
           <Routes>
-            <Route exact path="/" element={<HomePage />}></Route>
+            <Route exact path="/" element={<IndivProperty/> }></Route>
 
             <Route path="/login" element={<LoginPage />}></Route>
           </Routes>
-        </Router> */}
+        </Router>
         
       </div>
     );

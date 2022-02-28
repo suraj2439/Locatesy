@@ -1,4 +1,6 @@
 require("dotenv").config();
+const fs = require('fs')
+// import csv from "./client/public/ldata.csv"
 const express = require("express");
 const cors = require("cors");
 const bcrypt = require("bcrypt");
@@ -118,6 +120,52 @@ const buySchema = new mongoose.Schema({
 });
 
 const buy = mongoose.model("Buy", buySchema);
+
+
+function csvJSON(csv) {
+  const lines = csv.split('\n')
+  const result = []
+  const headers = lines[0].split(',')
+
+  for (let i = 1; i < lines.length; i++) {        
+      if (!lines[i])
+          continue
+      const obj = {}
+      const currentline = lines[i].split(',')
+
+      for (let j = 0; j < headers.length; j++) {
+          obj[headers[j]] = currentline[j]
+      }
+      result.push(obj)
+  }
+  return result
+}
+
+// propertyData = {"name" : "Parklane Lifeseasons", "propertyType" : "Residential Apartment", "rooms" : "2BHK", 
+// "location" : "Dhanori, Pune, Maharashtra", "latitude" : "24.53", "longitude" : "32.52",
+// "priceRange" : "₹ 50.98 - 51.64 L", "areaRange" : "687 - 696 sq. ft.", "status": "Under Construction", 
+// "basePrice" : "7420 per sq. ft.", "areaType" : "Carpet Area", "possession" : "June 2025", "descr" : "Make Kanha Vrundavan Heritage your next home. Book your 1 BHK flat in Saswad, Pune. With a carpet area of 475.44 sq. ft., the flat combines the finest design and amenities in Pune to provide a living experience unlike any other. Here is an exclusive deal for you. Buy your 1 BHK flat for Rs. 25 Lac. It is a new launch p...less"}
+
+// finalData = []
+// fs.readFile('./client/public/ldata.csv', 'utf8' , (err, data) => {
+//   if (err) {
+//     console.error(err)
+//     return
+//   }
+//   let csvData = csvJSON(data);
+//   for(let i = 0; i < csvData.length; i++) {
+//     obj = {}
+//     obj["link"] = csvData[i]["Image Link"];
+//     obj["name"] = csvData[i]["Name"];
+//     obj["location"] = csvData[i]["Location"]
+//     obj["propertyType"] = csvData[i]["Type"]
+//     console.log(csvData[i])
+//   }
+// })
+
+
+
+// console.log(csvJSON(csv))
 
 //-------------------------------------
 // const stud = new St({

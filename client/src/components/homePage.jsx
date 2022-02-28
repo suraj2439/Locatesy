@@ -19,7 +19,7 @@ const Item = styled(Paper)(({ theme }) => ({
 export default function homePage() {
   return (
     <div className="backGround">
-      <MyAppBar />
+      <MyAppBar isBg={true}/>
 
       <Container sx={{ mt: "2rem" }} fixed>
         <Grid
