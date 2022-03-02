@@ -7,6 +7,7 @@ import { Button, CardActionArea, CardActions } from "@mui/material";
 import { makeStyles } from "@material-ui/core/styles";
 import { useState } from "react";
 import "../styles/property.css";
+import { useNavigate } from "react-router-dom";
 
 const useStyles = makeStyles({
   root: {
@@ -18,17 +19,22 @@ const useStyles = makeStyles({
   },
 });
 
-export default function propertyCard() {
+export default function propertyCard({data}) {
+  const navigate = useNavigate();
+
   const classes = useStyles();
   const [state, setState] = useState({
     raised: false,
     shadow: 1,
   });
 
-  function cardOnClick() {}
+  function cardOnClick() {
+    navigate("/indivproperty", {state : data})
+  }
 
   return (
     <Card
+      onClick={cardOnClick}
       sx={{ maxWidth: 345, lineHeight: 5 }}
       className={classes.root}
       classes={{ root: state.raised ? classes.cardHovered : "" }}
@@ -41,8 +47,8 @@ export default function propertyCard() {
         <CardMedia
           component="img"
           height="200"
-          image="https://mediacdn.99acres.com/media1/16526/18/330538344M-1637844816719.jpg"
-          alt="green iguana"
+          image={data["link"]}
+          alt={data["name"]}
         />
         <hr style={{ margin: "0", padding: "0" }} />
         <CardContent className="cardStyle">
@@ -54,7 +60,7 @@ export default function propertyCard() {
             component="div"
             align="left"
           >
-            <strong>Maithili Square</strong>
+            <strong>{data["name"]}</strong>
           </Typography>
           <Typography
             className="textStyle"
@@ -64,7 +70,7 @@ export default function propertyCard() {
             component="div"
             align="left"
           >
-            Apartment 2 BHK
+            {data["propertyType"]} {data["rooms"]}
           </Typography>
           <Typography
             className="textStyle"
@@ -73,7 +79,7 @@ export default function propertyCard() {
             color="#F7F7F7"
             align="left"
           >
-            In Kiwale, Pune
+            In {data["location"]}, Pune
           </Typography>
         </CardContent>
       </CardActionArea>

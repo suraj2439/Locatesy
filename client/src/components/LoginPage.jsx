@@ -15,14 +15,10 @@ function LoginPage(props) {
   async function loginUser(e) {
     e.preventDefault();
     const loginObj = { username: userName, password: password };
-
-    var access_token = "";
-    var refresh_token = "";
-
     console.log(loginObj);
     console.log("begin");
     try {
-      const res = await axios.post("/login",loginObj);
+      const res = await axios.post("/login", loginObj);
       localStorage.setItem("accessToken", res.data.accessToken);
       localStorage.setItem("refreshToken", res.data.refreshToken);  
       console.log("login success")

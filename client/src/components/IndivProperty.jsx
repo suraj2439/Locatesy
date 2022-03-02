@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import MyAppBar from "./MyAppBar";
 import { faMapLocationDot } from "@fortawesome/free-solid-svg-icons";
 import { faArrowRightArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Button from "@mui/material/Button";
 import CircularProgress from "@mui/material/CircularProgress"
-import { TMP } from "./TMP";
+import { Map } from "./Map";
 import PoolIcon from '@mui/icons-material/Pool';
 import SportsSoccerIcon from '@mui/icons-material/SportsSoccer';
 import LocalFloristIcon from '@mui/icons-material/LocalFlorist';
@@ -19,8 +19,17 @@ import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 import GroupsIcon from '@mui/icons-material/Groups';
 import LocalBarIcon from '@mui/icons-material/LocalBar';
 import "../styles/indivProperty.css";
+import { useLocation } from "react-router-dom";
 
-export default function IndivProperty({propertyData}) {
+export default function IndivProperty() {
+    useEffect(() => {
+        window.scrollTo(0, 0)
+    }, [])
+
+    const {state} = useLocation();
+    let propertyData = state
+    if(! propertyData) return (<div>404 Not Found</div>)
+    console.log(propertyData["location"])
     const [isLocateClicked, setIsLocateClicked ]= useState(false)
     const [progress, setProgress] = useState(false)
 
@@ -42,27 +51,25 @@ export default function IndivProperty({propertyData}) {
     ]
 
     function locate() {
-        console.log("start")
         setProgress(true);
-        console.log("hello")
         setIsLocateClicked(true);
     }
 
-    propertyData = {"name" : "Parklane Lifeseasons", "propertyType" : "Residential Apartment", "rooms" : "2BHK", 
-            "location" : "Dhanori, Pune, Maharashtra", "latitude" : "24.53", "longitude" : "32.52",
-            "priceRange" : "₹ 50.98 - 51.64 L", "areaRange" : "687 - 696 sq. ft.", "status": "Under Construction", 
-            "basePrice" : "7420 per sq. ft.", "areaType" : "Carpet Area", "possession" : "June 2025", "descr" : "Make Kanha Vrundavan Heritage your next home. Book your 1 BHK flat in Saswad, Pune. With a carpet area of 475.44 sq. ft., the flat combines the finest design and amenities in Pune to provide a living experience unlike any other. Here is an exclusive deal for you. Buy your 1 BHK flat for Rs. 25 Lac. It is a new launch p...less"}
+    // propertyData = {"name" : "Parklane Lifeseasons", "propertyType" : "Residential Apartment", "rooms" : "2BHK", 
+    //         "location" : "Dhanori, Pune, Maharashtra", "latitude" : "24.53", "longitude" : "32.52",
+    //         "priceRange" : "₹ 50.98 - 51.64 L", "areaRange" : "687 - 696 sq. ft.", "status": "Under Construction", 
+    //         "basePrice" : "7420 per sq. ft.", "areaType" : "Carpet Area", "possession" : "June 2025", "descr" : "Make Kanha Vrundavan Heritage your next home. Book your 1 BHK flat in Saswad, Pune. With a carpet area of 475.44 sq. ft., the flat combines the finest design and amenities in Pune to provide a living experience unlike any other. Here is an exclusive deal for you. Buy your 1 BHK flat for Rs. 25 Lac. It is a new launch p...less"}
     
     return (
         progress ? 
         <div className="progressBarContainer">
-            {isLocateClicked && <TMP address={"surat"} setProgressBar={setProgress}/>}
+            {isLocateClicked && <Map address={propertyData["location"] + ", pune, maharashtra"} setProgressBar={setProgress}/>}
             <CircularProgress className="progressBar" color="secondary" />
         </div> :
         <div className="indivProperty">
             <MyAppBar/>
             <div className="propertyContainer">
-                <img className="propertyImage" src="https://mediacdn.99acres.com/media1/16526/18/330538344M-1637844816719.jpg" alt="property image" />
+                <img className="propertyImage" src={propertyData["link"]} alt="property image" />
                 <div class="overlay"></div>
                 <div className="propertyTitle">
                     <div className="descr">{propertyData["rooms"]} {propertyData["propertyType"]}</div>

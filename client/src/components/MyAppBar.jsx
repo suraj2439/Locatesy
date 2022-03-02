@@ -47,8 +47,6 @@ function MyAppBar({isBg}) {
   const classes1 = useStyles();
   useEffect(async () => {
     const token = localStorage.getItem("accessToken");
-    console.log(token);
-
     try {
       if (token === "null") throw "null";
       const resp = await axios.get("/property", {

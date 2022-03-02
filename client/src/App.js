@@ -28,9 +28,9 @@ class App extends Component {
         {/* <IndivProperty/> */}
         <Router>
           <Routes>
-            <Route exact path="/" element={<IndivProperty/> }></Route>
-
+            <Route exact path="/" element={<HomePage/> }></Route>
             <Route path="/login" element={<LoginPage />}></Route>
+            <Route path="/indivproperty" element={<IndivProperty />}></Route>
           </Routes>
         </Router>
         

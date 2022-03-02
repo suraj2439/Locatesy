@@ -7,6 +7,9 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 var mongoose = require("mongoose");
 var ObjectID = require("mongodb").ObjectId;
+const axios = require('axios');
+
+let count = 0
 
 mongoose.connect("mongodb://localhost/locatesy-db", {
   useNewUrlParser: true,
@@ -41,66 +44,97 @@ const User = mongoose.model("User", userSchema);
 
 // const stud = new User({
 //   _id: 3,
-//   name: "sanket",
-//   username: "sanket17",
-//   password: "123"
+//   name: "suraj",
+//   username: "suraj",
+//   password: "1234"
 // });
 // stud.save().then(() => console.log("One entry added"));
 
+
 const rentPropertySchema = new mongoose.Schema({
   p_id: Number, // property id
-  propertyName: String,
-  locality: String,
-  typeOfProperty: String,
-  startingPrice: Number,
-  area: String,
-  photoLink: String,
-  lattitude: String,
-  longitude: String,
-  description: String,
+  link : String,
+  name: String,
+  location: String,
+  propertyType: String,
+  rooms: String,
+  priceRange: String,
+  areaRange: String,
+  areaType : String,
+  avgCostNumeric: Number,
+  areaNumeric: Number,
+  basePrice: String,
+  descr: String,
+  status: String,
+  possession: String,
+  lattitude: Number,
+  longitude: Number
 });
 
 const rentProperty = mongoose.model("Rent Property", rentPropertySchema);
 
 const buyPropertySchema = new mongoose.Schema({
   p_id: Number, // property id
-  propertyName: String,
-  locality: String,
-  typeOfProperty: String,
-  startingPrice: Number,
-  area: String,
-  photoLink: String,
-  lattitude: String,
-  longitude: String,
-  description: String,
+  link : String,
+  name: String,
+  location: String,
+  propertyType: String,
+  rooms: String,
+  priceRange: String,
+  areaRange: String,
+  areaType : String,
+  avgCostNumeric: Number,
+  areaNumeric: Number,
+  basePrice: String,
+  descr: String,
+  status: String,
+  possession: String,
+  lattitude: Number,
+  longitude: Number
 });
 
 const buyProperty = mongoose.model("Buy Property", buyPropertySchema);
 
 const dealtPropertySchema = new mongoose.Schema({
   p_id: Number, // property id
-  propertyName: String,
-  locality: String,
-  typeOfProperty: String,
-  startingPrice: Number,
-  area: String,
-  photoLink: String,
-  lattitude: String,
-  longitude: String,
-  description: String,
+  link : String,
+  name: String,
+  location: String,
+  propertyType: String,
+  rooms: String,
+  priceRange: String,
+  areaRange: String,
+  areaType : String,
+  avgCostNumeric: Number,
+  areaNumeric: Number,
+  basePrice: String,
+  descr: String,
+  status: String,
+  possession: String,
+  lattitude: Number,
+  longitude: Number
 });
 
 const dealtProperty = mongoose.model("Dealt Property", dealtPropertySchema);
 
 const rentedPropertySchema = new mongoose.Schema({
   p_id: Number, // property id
-  propertyName: String,
-  locality: String,
-  typeOfProperty: String,
-  startingPrice: Number,
-  propertyArea: String,
-  photoLink: String,
-  description: String,
+  link : String,
+  name: String,
+  location: String,
+  propertyType: String,
+  rooms: String,
+  priceRange: String,
+  areaRange: String,
+  areaType : String,
+  avgCostNumeric: Number,
+  areaNumeric: Number,
+  basePrice: String,
+  descr: String,
+  status: String,
+  possession: String,
+  lattitude: Number,
+  longitude: Number
 });
 
 const rentedProperty = mongoose.model("Rented Property", rentedPropertySchema);
@@ -122,24 +156,212 @@ const buySchema = new mongoose.Schema({
 const buy = mongoose.model("Buy", buySchema);
 
 
-function csvJSON(csv) {
-  const lines = csv.split('\n')
-  const result = []
-  const headers = lines[0].split(',')
-
-  for (let i = 1; i < lines.length; i++) {        
-      if (!lines[i])
-          continue
-      const obj = {}
-      const currentline = lines[i].split(',')
-
-      for (let j = 0; j < headers.length; j++) {
-          obj[headers[j]] = currentline[j]
-      }
-      result.push(obj)
+csv = fs.readFileSync("./client/public/ldata.csv")
+var array = csv.toString().split("\r");
+let csvData = [];
+let headers = array[0].split(",")
+for (let i = 1; i < array.length - 1; i++) {
+  let obj = {}
+  let str = array[i]
+  let s = ''
+ 
+  let flag = 0
+  for (let ch of str) {
+    if (ch === '"' && flag === 0) {
+      flag = 1
+    }
+    else if (ch === '"' && flag == 1) flag = 0
+    if (ch === ',' && flag === 0) ch = '|'
+    if (ch !== '"') s += ch
   }
-  return result
+  let properties = s.split("|")
+  if(properties.length !== headers.length)
+    continue
+
+  for (let j in headers) {
+    if (properties[j].includes(",")) {
+      obj[headers[j]] = properties[j]
+        .split(",").map(item => item.trim())
+    }
+    else obj[headers[j]] = properties[j]
+  }
+ 
+  csvData.push(obj)
 }
+
+function extractCost(costString) {
+  let flag = false
+  let cost = costString
+  // console.log(cost)
+  if(costString.length == 2) {
+    cost = costString[0]
+  }
+  let tmp = ""
+  if(cost.includes(" L"))
+    tmp = cost.split(" L")[0]
+  else {
+    tmp = cost.split(" Cr")[0]
+    flag = true
+  }
+
+  if(tmp.includes("- "))
+    cost = tmp.split("- ")[1]
+  else cost = tmp.split("₹ ")[1]
+  if(cost == undefined) return null
+
+  let finalCost = parseFloat(cost)
+  if(flag) {
+    finalCost = finalCost * 100
+  }
+  return finalCost
+}
+
+function extractArea(areaString) {
+  if(areaString.length <= 5) {
+    let tmp = ""
+    for(let m = 0; m < areaString.length; m++)
+      tmp = tmp + areaString[m]
+    areaString = tmp
+  }
+  parea = areaString.slice(0, 10)
+
+  if(parea.includes("-"))
+    parea = parea.split("-")[0]
+  else parea = parea.split(" sq")[0]
+
+  return parseInt(parea)
+}
+
+function extractPriceRange(costString) {
+  let res = ""
+  let cost = costString
+  if(costString.length == 2) {
+    cost = costString[0]
+  }
+  let tmp = ""
+  if(cost.includes(" L")) {
+    tmp = cost.split(" L")[0]
+    res = tmp + " L"
+  }
+  else {
+    tmp = cost.split(" Cr")[0]
+    res = tmp + " Cr"    
+  }
+  return res
+}
+
+function extractAreaRangeType(areaString, flag) {
+  tmp = areaString
+  if(areaString.length <= 5) {
+    tmp = ""
+    for(let m = 0; m < areaString.length; m++)
+      tmp = tmp + areaString[m]
+  }
+  if(flag)
+    return tmp.split(") ")[0] + ")"
+  else return  tmp.split(") ")[1]
+}
+
+function extractDescr(descrString) {
+  tmp = descrString
+  if(descrString.length <= 10) {
+    tmp = ""
+    for(let m = 0; m < descrString.length; m++)
+      tmp = tmp + descrString[m] + ", "
+  }
+  return tmp
+}
+
+
+let status = ["Under Construction", "Ready to Move", "New Launch", "Occupied", "Under Maintainance"]
+let months = ["Jan", "Feb", "March", "April", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"]
+
+function getPropertyStatus() {
+  return status[Math.floor(Math.random()*4)]
+}
+
+function getPossession() {
+  return months[Math.floor(Math.random()*11)] + " " + (2022 + Math.floor(Math.random()*10)).toString()
+}
+
+async function saveRecord(obj, address) {
+  let tokenStr = "1emACL3rF0LsiOzctqvapbDKANM4u7GA";
+
+  let res = ""
+  try {
+    res = await axios.get("http://open.mapquestapi.com/geocoding/v1/address?key="+tokenStr+"&location=" + address)
+  }catch (ex) {
+    return
+  }
+  
+  try {
+    lat = parseFloat(res.data["results"][0]["locations"][0]["latLng"]["lat"])
+    lng = parseFloat(res.data["results"][0]["locations"][0]["latLng"]["lng"])
+  }
+  catch(ex) {
+    return
+  }
+
+  obj["lat"] = lat;
+  obj["lng"] = lng;
+
+  obj.p_id = count;
+  count+=1
+  console.log(count)
+  const property = new buyProperty(obj)
+
+  property.save().then((res) => console.log("One entry added")).catch((err) => console.log(err));
+
+}
+
+for(let i = 5000; i < 6000 && false; i++) {
+  obj = {}
+  obj["link"] = csvData[i]["Image Link"].slice(1, csvData[i]["Image Link"].length)
+  obj["name"] = csvData[i]["Name"];
+  obj["location"] = csvData[i]["Location"]
+  obj["propertyType"] = csvData[i]["Type"]
+  obj["rooms"] = csvData[i]["Rooms"]
+  obj["priceRange"]  = extractPriceRange(csvData[i]["Avg Cost"])
+  obj["areaRange"] = extractAreaRangeType(csvData[i]["Area"], true)
+  obj["areaType"] = extractAreaRangeType(csvData[i]["Area"], false)
+  obj["avgCostNumeric"] = extractCost(csvData[i]["Avg Cost"])*100000
+  obj["areaNumeric"] = extractArea(csvData[i]["Area"])
+  obj["basePrice"] = (extractCost(csvData[i]["Avg Cost"])*100000 / extractArea(csvData[i]["Area"], false)).toFixed(2).toString() + " per sq.ft."
+  obj["descr"] = extractDescr(csvData[i]["Description"])
+  obj["status"] = getPropertyStatus()
+  obj["possession"] = getPossession()
+  try{
+    saveRecord(obj, csvData[i]["Location"] + ", pune, maharashtra")
+  }catch(ex) {
+    console.log("Exception")
+  }
+  
+}
+
+
+// for(let i=0; i < 5; i++) {
+//   saveRecord(result[i]["Location"] + ", pune, maharashtra")
+// }
+
+
+// function csvJSON(csv) {
+//   const lines = csv.split('\n')
+//   const result = []
+//   const headers = lines[0].split(',')
+
+//   for (let i = 1; i < lines.length; i++) {        
+//       if (!lines[i])
+//           continue
+//       const obj = {}
+//       const currentline = lines[i].split(',')
+
+//       for (let j = 0; j < headers.length; j++) {
+//           obj[headers[j]] = currentline[j]
+//       }
+//       result.push(obj)
+//   }
+//   return result
+// }
 
 // propertyData = {"name" : "Parklane Lifeseasons", "propertyType" : "Residential Apartment", "rooms" : "2BHK", 
 // "location" : "Dhanori, Pune, Maharashtra", "latitude" : "24.53", "longitude" : "32.52",
@@ -197,6 +419,12 @@ app.get("user", (req, res) => {
 //a simple get request for property page
 app.get("/property", authenticateToken, (req, res) => {
   res.json({ prize: "good" });
+});
+
+app.get("/buyproperties", (req, res) => {
+  conn.collection("buy properties").find().toArray((err, data) => {
+    res.json(data);
+  })
 });
 
 //for new user to register
