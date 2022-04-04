@@ -8,7 +8,7 @@ export function Map({address}) {
   const [link, setLink] = useState(process.env.PUBLIC_URL+"map.html?lat="+lat+"&lon="+lng)
 
   useEffect(() => {
-    let tokenStr = "1emACL3rF0LsiOzctqvapbDKANM4u7GA";
+    let tokenStr = "khaztAebuZ90zyz6YlTRrsMfOBpwnzNV";
 
     console.log(address)
     axios.get("http://open.mapquestapi.com/geocoding/v1/address?key="+tokenStr+"&location=" + address).then((res) => {
@@ -16,6 +16,10 @@ export function Map({address}) {
       lng = parseFloat(res.data["results"][0]["locations"][0]["latLng"]["lng"])
       console.log(lat)
       console.log(lng)
+      setLink(process.env.PUBLIC_URL+"map.html?lat="+lat+"&lon="+lng)
+      {document.getElementById("anchor").click()}
+    }).catch((err) => {
+      console.log("error in loading location from address")
       setLink(process.env.PUBLIC_URL+"map.html?lat="+lat+"&lon="+lng)
       {document.getElementById("anchor").click()}
     })

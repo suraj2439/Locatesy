@@ -27,7 +27,7 @@ export default function Navbar1() {
           <Navbar.Toggle aria-controls="navbarScroll" />
           <Navbar.Collapse id="navbarScroll" className="justify-content-end">
             <Nav style={{ fontSize: "1.2rem" }}>
-              <Nav.Link href="#home" style={{ marginRight: "1.5rem" }}>
+              <Nav.Link href={process.env.PUBLIC_URL} style={{ marginRight: "1.5rem" }}>
                 Buy
               </Nav.Link>
               <Nav.Link href="#features" style={{ marginRight: "1.5rem" }}>

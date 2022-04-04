@@ -10,6 +10,7 @@ import MyAppBar from "./components/MyAppBar";
 import IndivProperty from "./components/IndivProperty"
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import HomePage from "./components/homePage";
+import { NotFound } from "./components/NotFound";
 
 class App extends Component {
   // componentDidMount () {
@@ -21,16 +22,16 @@ class App extends Component {
   // }
 
   render() {
+    console.log("aaa");
+    console.log(process.env)
     return (
       <div className="App">
-        
-        {/* <TMP address={"surat"}/> */}
-        {/* <IndivProperty/> */}
         <Router>
           <Routes>
             <Route exact path="/" element={<HomePage/> }></Route>
             <Route path="/login" element={<LoginPage />}></Route>
             <Route path="/indivproperty" element={<IndivProperty />}></Route>
+            <Route path='*' element={<NotFound/>} />
           </Routes>
         </Router>
         

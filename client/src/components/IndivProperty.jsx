@@ -19,9 +19,11 @@ import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 import GroupsIcon from '@mui/icons-material/Groups';
 import LocalBarIcon from '@mui/icons-material/LocalBar';
 import "../styles/indivProperty.css";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export default function IndivProperty() {
+    const navigate = useNavigate();
+
     useEffect(() => {
         window.scrollTo(0, 0)
     }, [])
@@ -33,26 +35,30 @@ export default function IndivProperty() {
     const [isLocateClicked, setIsLocateClicked ]= useState(false)
     const [progress, setProgress] = useState(false)
 
-    const colors = ["red", "blue", "yellowgreen", "purple", "green", "pink", "orange", "gray", "brown", "blue-green", "cadetblue"]
+    const colors = ["cadetblue", "yellowgreen", "purple", "orange", "gray", "brown", "blue-green", "cadetblue"]
 
     let facilities = [
-        <div className="facilityContainer"><PoolIcon style={{fontSize : "5vw", color : colors[Math.floor(Math.random() * 10)]}} className="facility"/><div className="facilityText">Swimming Pool</div></div>,
-        <div className="facilityContainer"><SportsSoccerIcon style={{fontSize : "5vw", color : colors[Math.floor(Math.random() * 10)]}} className="facility"/><div className="facilityText">Football</div></div>,
-        <div className="facilityContainer"><LocalFloristIcon style={{fontSize : "5vw", color : colors[Math.floor(Math.random() * 10)]}} className="facility"/><div className="facilityText">Flower Garden</div></div>,
-        <div className="facilityContainer"><SchoolIcon style={{fontSize : "5vw", color : colors[Math.floor(Math.random() * 10)]}} className="facility"/><div className="facilityText">Top Schools</div></div>,
-        <div className="facilityContainer"><HotTubIcon style={{fontSize : "5vw", color : colors[Math.floor(Math.random() * 10)]}} className="facility"/><div className="facilityText">Hot Bath Tub</div></div>,
-        <div className="facilityContainer"><SelfImprovementIcon style={{fontSize : "5vw", color : colors[Math.floor(Math.random() * 10)]}} className="facility"/><div className="facilityText">Yoga Club</div></div>,
-        <div className="facilityContainer"><PetsIcon style={{fontSize : "5vw", color : colors[Math.floor(Math.random() * 10)]}} className="facility"/><div className="facilityText">Pets Garden</div></div>,
-        <div className="facilityContainer"><BatteryCharging80Icon style={{fontSize : "5vw", color : colors[Math.floor(Math.random() * 10)]}} className="facility"/><div className="facilityText">Car Charging</div></div>,
-        <div className="facilityContainer"><ComputerIcon style={{fontSize : "5vw", color : colors[Math.floor(Math.random() * 10)]}} className="facility"/><div className="facilityText">Computer Lab</div></div>,
-        <div className="facilityContainer"><FitnessCenterIcon style={{fontSize : "5vw", color : colors[Math.floor(Math.random() * 10)]}} className="facility"/><div className="facilityText">Gym</div></div>,
-        <div className="facilityContainer"><GroupsIcon style={{fontSize : "5vw", color : colors[Math.floor(Math.random() * 10)]}} className="facility"/><div className="facilityText">Club</div></div>,
-        <div className="facilityContainer"><LocalBarIcon style={{fontSize : "5vw", color : colors[Math.floor(Math.random() * 10)]}}  className="facility"/><div className="facilityText">Bar</div></div>,
+        <div className="facilityContainer"><PoolIcon style={{fontSize : "5vw", color : colors[Math.floor(Math.random() * 5)]}} className="facility"/><div className="facilityText">Swimming Pool</div></div>,
+        <div className="facilityContainer"><SportsSoccerIcon style={{fontSize : "5vw", color : colors[Math.floor(Math.random() * 5)]}} className="facility"/><div className="facilityText">Football</div></div>,
+        <div className="facilityContainer"><LocalFloristIcon style={{fontSize : "5vw", color : colors[Math.floor(Math.random() * 5)]}} className="facility"/><div className="facilityText">Flower Garden</div></div>,
+        <div className="facilityContainer"><SchoolIcon style={{fontSize : "5vw", color : colors[Math.floor(Math.random() * 5)]}} className="facility"/><div className="facilityText">Top Schools</div></div>,
+        <div className="facilityContainer"><HotTubIcon style={{fontSize : "5vw", color : colors[Math.floor(Math.random() * 5)]}} className="facility"/><div className="facilityText">Hot Bath Tub</div></div>,
+        <div className="facilityContainer"><SelfImprovementIcon style={{fontSize : "5vw", color : colors[Math.floor(Math.random() * 5)]}} className="facility"/><div className="facilityText">Yoga Club</div></div>,
+        <div className="facilityContainer"><PetsIcon style={{fontSize : "5vw", color : colors[Math.floor(Math.random() * 5)]}} className="facility"/><div className="facilityText">Pets Garden</div></div>,
+        <div className="facilityContainer"><BatteryCharging80Icon style={{fontSize : "5vw", color : colors[Math.floor(Math.random() * 5)]}} className="facility"/><div className="facilityText">Car Charging</div></div>,
+        <div className="facilityContainer"><ComputerIcon style={{fontSize : "5vw", color : colors[Math.floor(Math.random() * 5)]}} className="facility"/><div className="facilityText">Computer Lab</div></div>,
+        <div className="facilityContainer"><FitnessCenterIcon style={{fontSize : "5vw", color : colors[Math.floor(Math.random() * 5)]}} className="facility"/><div className="facilityText">Gym</div></div>,
+        <div className="facilityContainer"><GroupsIcon style={{fontSize : "5vw", color : colors[Math.floor(Math.random() * 5)]}} className="facility"/><div className="facilityText">Club</div></div>,
+        <div className="facilityContainer"><LocalBarIcon style={{fontSize : "5vw", color : colors[Math.floor(Math.random() * 5)]}}  className="facility"/><div className="facilityText">Bar</div></div>,
     ]
 
     function locate() {
         setProgress(true);
         setIsLocateClicked(true);
+    }
+
+    function initPayment() {
+        navigate("/error");
     }
 
     // propertyData = {"name" : "Parklane Lifeseasons", "propertyType" : "Residential Apartment", "rooms" : "2BHK", 
@@ -98,7 +104,7 @@ export default function IndivProperty() {
                 <strong>Highlights: </strong> {propertyData["descr"]}
             </div>      
             <div className="btns"> 
-                <Button className="action" size="large" color="success" variant="contained" startIcon={<FontAwesomeIcon icon={faArrowRightArrowLeft} />}>Take Action</Button>
+                <Button onClick={initPayment} className="action" size="large" color="success" variant="contained" startIcon={<FontAwesomeIcon icon={faArrowRightArrowLeft} />}>Take Action</Button>
                 <Button onClick={locate} className="map" size="large" color="primary" variant="contained" startIcon={<FontAwesomeIcon icon={faMapLocationDot} />}>Locate</Button>
             </div>
 

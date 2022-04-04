@@ -46,22 +46,22 @@ function MyAppBar({isBg}) {
 
   const classes1 = useStyles();
   useEffect(async () => {
-    const token = localStorage.getItem("accessToken");
-    try {
-      if (token === "null") throw "null";
-      const resp = await axios.get("/property", {
-        headers: {
-          Authorization: "Bearer " + token,
-        },
-      });
-    } catch (err) {
-      console.log("in error");
-      localStorage.setItem("accessToken", null);
-      requestAccessToken().then((msg) => {
-        console.log("req access token resp", msg);
-        if (!msg) navigate("/login");
-      });
-    }
+    // const token = localStorage.getItem("accessToken");
+    // try {
+    //   if (token === "null") throw "null";
+    //   const resp = await axios.get("/property", {
+    //     headers: {
+    //       Authorization: "Bearer " + token,
+    //     },
+    //   });
+    // } catch (err) {
+    //   console.log("in error");
+    //   localStorage.setItem("accessToken", null);
+    //   requestAccessToken().then((msg) => {
+    //     console.log("req access token resp", msg);
+    //     if (!msg) navigate("/login");
+    //   });
+    // }
   });
 
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -76,12 +76,21 @@ function MyAppBar({isBg}) {
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
+    navigate("/")
   };
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
 
+  const logoutUser = () => {
+    localStorage.setItem("accessToken", null)
+    localStorage.setItem("refreshToken", null)
+  }
+
+  function handleMenuClickEvent(menuChoice) {
+    menuChoice === "Logout" && logoutUser()
+  }
   // const token = localStorage.getItem("accessToken");
   // if(token === null) {
   //   navigate("/login")
@@ -161,7 +170,9 @@ function MyAppBar({isBg}) {
             <img
               src={Icon}
               alt="logo"
+              onClick={() => {navigate("/")}}
               style={{
+                cursor: "pointer",
                 width: "120px",
                 marginRight: "8rem",
               }}
@@ -210,7 +221,7 @@ function MyAppBar({isBg}) {
               >
                 {settings.map((setting) => (
                   <MenuItem key={setting} onClick={handleCloseNavMenu}>
-                    <Typography textAlign="center">{setting}</Typography>
+                    <Typography value={setting} onClick={() => handleMenuClickEvent(setting)} textAlign="center">{setting}</Typography>
                   </MenuItem>
                 ))}
               </Menu>
