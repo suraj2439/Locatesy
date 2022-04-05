@@ -5,7 +5,7 @@ import Grid from "@mui/material/Grid";
 import MyAppBar from "./MyAppBar";
 import Property from "./property";
 import Container from "@mui/material/Container";
-import "../styles/homePage.css";
+import "../styles/propertyPage.css";
 import axios from "axios";
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -16,18 +16,24 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-function loadBuyPropertyData(setData) {
-  axios.get("/buyproperties").then((res) => {
+function loadPropertyData(setData, pageType) {
+  let endpoint = "";
+  if(pageType === "buy") endpoint = "/buyproperties";
+  else endpoint = "/rentproperties"
+
+  console.log(endpoint)
+  // load property data according to type(buy or rent)
+  axios.get(endpoint).then((res) => {
     setData(res.data.slice(0, 100))
   }).catch((err) => console.log(err))
 }
 
-export default function homePage() {
+export default function propertyPage({pageType}) {
   const [propertyData, setPropertyData] = useState([])
 
   useEffect(() => {
-    loadBuyPropertyData(setPropertyData)
-  }, [])
+    loadPropertyData(setPropertyData, pageType)
+  }, [pageType])
 
   return (
     <div className="backGround">
@@ -42,7 +48,7 @@ export default function homePage() {
         >
           {Array.from(Array(propertyData.length)).map((_, index) => (
             <Grid item xs={2} sm={4} md={4} key={index}>
-              <Property data={propertyData[index]}/>
+              <Property data={propertyData[index]} type={pageType}/>
             </Grid>
           ))} 
         </Grid>

@@ -19,7 +19,7 @@ const useStyles = makeStyles({
   },
 });
 
-export default function propertyCard({data}) {
+export default function propertyCard({data, type}) {
   const navigate = useNavigate();
 
   const classes = useStyles();
@@ -29,7 +29,8 @@ export default function propertyCard({data}) {
   });
 
   function cardOnClick() {
-    navigate("/indivproperty", {state : data})
+    let obj = {"data" : data, "type": type}
+    navigate("/indivproperty", {state : obj})
   }
 
   return (

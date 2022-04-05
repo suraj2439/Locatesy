@@ -2,7 +2,7 @@ import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
 import "../styles/loginPage.css";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import axios from "axios";
 import {useNavigate} from "react-router-dom"
 

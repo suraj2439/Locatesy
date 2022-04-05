@@ -15,11 +15,8 @@ import MenuItem from "@mui/material/MenuItem";
 import Icon from "../images/Icon.png";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-import axios from "axios";
-import { requestAccessToken } from "../Utils/requestAccessToken";
 import { makeStyles } from "@material-ui/core/styles";
 import bImg from "../images/navpic8.jpg";
-import { Brightness1 } from "@material-ui/icons";
 
 const pages = ["Buy", "Sell", "Rent"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
@@ -74,9 +71,10 @@ function MyAppBar({isBg}) {
     setAnchorElUser(event.currentTarget);
   };
 
-  const handleCloseNavMenu = () => {
+  const handleCloseNavMenu = (e) => {
+    console.log(e.target.value)
     setAnchorElNav(null);
-    navigate("/")
+    // navigate("/")
   };
 
   const handleCloseUserMenu = () => {
@@ -182,7 +180,9 @@ function MyAppBar({isBg}) {
               {pages.map((page) => (
                 <Button
                   key={page}
-                  onClick={handleCloseNavMenu}
+                  // onChange={(e) => handleCloseNavMenu(e.target.value)}
+                  onClick={() => {navigate("/" + (page.toLowerCase() === "buy" ? "" : page.toLowerCase()))}}
+                  // onClick={handleCloseNavMenu}
                   sx={{
                     my: 2,
                     color: "white",

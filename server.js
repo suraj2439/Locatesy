@@ -285,6 +285,24 @@ let months = [
   "Dec",
 ];
 
+function generateRandom(min = 0, max = 100) {
+
+  // find diff
+  let difference = max - min;
+
+  // generate random number 
+  let rand = Math.random();
+
+  // multiply with difference 
+  rand = Math.floor( rand * difference);
+
+  // add with min value 
+  rand = rand + min;
+
+  return rand;
+}
+
+
 function getPropertyStatus() {
   return status[Math.floor(Math.random() * 4)];
 }
@@ -325,7 +343,7 @@ async function saveRecord(obj, address) {
   obj.p_id = count;
   count += 1;
   console.log(count);
-  const property = new buyProperty(obj);
+  const property = new rentProperty(obj);
 
   property
     .save()
@@ -333,7 +351,9 @@ async function saveRecord(obj, address) {
     .catch((err) => console.log(err));
 }
 
-for (let i = 5000; i < 6000 && false; i++) {
+for (let j = 1; j < 1000 && false; j++) {
+  let i = generateRandom(2000, 3500);
+
   obj = {};
   obj["link"] = csvData[i]["Image Link"].slice(
     1,
@@ -346,15 +366,11 @@ for (let i = 5000; i < 6000 && false; i++) {
   obj["priceRange"] = extractPriceRange(csvData[i]["Avg Cost"]);
   obj["areaRange"] = extractAreaRangeType(csvData[i]["Area"], true);
   obj["areaType"] = extractAreaRangeType(csvData[i]["Area"], false);
-  obj["avgCostNumeric"] = extractCost(csvData[i]["Avg Cost"]) * 100000;
+  obj["avgCostNumeric"] = extractCost(csvData[i]["Avg Cost"]) * 1000;
   obj["areaNumeric"] = extractArea(csvData[i]["Area"]);
-  obj["basePrice"] =
-    (
-      (extractCost(csvData[i]["Avg Cost"]) * 100000) /
-      extractArea(csvData[i]["Area"], false)
-    )
-      .toFixed(2)
-      .toString() + " per sq.ft.";
+  let tt = generateRandom(2, 5);
+  console.log("dsda", tt);
+  obj["basePrice"] = obj["avgCostNumeric"] * generateRandom(2, 5);
   obj["descr"] = extractDescr(csvData[i]["Description"]);
   obj["status"] = getPropertyStatus();
   obj["possession"] = getPossession();
@@ -447,6 +463,15 @@ app.get("/property", authenticateToken, (req, res) => {
 app.get("/buyproperties", (req, res) => {
   conn
     .collection("buy properties")
+    .find()
+    .toArray((err, data) => {
+      res.json(data);
+    });
+});
+
+app.get("/rentproperties", (req, res) => {
+  conn
+    .collection("rent properties")
     .find()
     .toArray((err, data) => {
       res.json(data);

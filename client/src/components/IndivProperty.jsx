@@ -31,7 +31,7 @@ export default function IndivProperty() {
   }, []);
 
   const { state } = useLocation();
-  let propertyData = state;
+  let propertyData = state.data;
   if (!propertyData) return <div>404 Not Found</div>;
   console.log(propertyData["location"]);
 
@@ -282,10 +282,10 @@ export default function IndivProperty() {
       <div className="propertyDetails">
         <div className="price">
           <div className="priceRange">
-            <strong>{propertyData["priceRange"]}</strong>{" "}
+            <strong>{state.type === "buy" ? propertyData["priceRange"] + " " : "₹ " + Math.floor(propertyData["avgCostNumeric"])} </strong>/month
           </div>
-          <div className="basePrice">
-            (Base Price: rs. {propertyData["basePrice"]})
+          <div className="basePrice"> 
+            {state.type === "buy" ? "(Base Price: rs. " + propertyData["basePrice"] + ")" : "(Deposit: rs. " + Math.floor(propertyData["basePrice"]) + ")"}
           </div>
         </div>
 
