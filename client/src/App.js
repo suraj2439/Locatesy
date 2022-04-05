@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import ReactDOM from 'react-dom';
+import ReactDOM from "react-dom";
 import "./App.css";
 import Navbar1 from "./components/Navbar1";
 import { TMP } from "./components/TMP";
@@ -7,10 +7,11 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
 import LoginPage from "./components/LoginPage";
 import MyAppBar from "./components/MyAppBar";
-import IndivProperty from "./components/IndivProperty"
+import IndivProperty from "./components/IndivProperty";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import HomePage from "./components/homePage";
 import { NotFound } from "./components/NotFound";
+import SignUp from "./components/Signup";
 
 class App extends Component {
   // componentDidMount () {
@@ -23,18 +24,18 @@ class App extends Component {
 
   render() {
     console.log("aaa");
-    console.log(process.env)
+    console.log(process.env);
     return (
       <div className="App">
         <Router>
           <Routes>
-            <Route exact path="/" element={<HomePage/> }></Route>
+            <Route exact path="/" element={<HomePage />}></Route>
             <Route path="/login" element={<LoginPage />}></Route>
+            <Route exact path="/signup" element={<SignUp />}></Route>
             <Route path="/indivproperty" element={<IndivProperty />}></Route>
-            <Route path='*' element={<NotFound/>} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </Router>
-        
       </div>
     );
   }

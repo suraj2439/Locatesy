@@ -480,6 +480,7 @@ app.post("/login", async (req, res) => {
     .toArray((err, data) => {
       if (err) {
         console.log(err);
+        res.status(403).send();
       }
       console.log(data[0]);
       const accessToken = jwt.sign(data[0], process.env.ACCESS_TOKEN, {
@@ -518,10 +519,6 @@ function authenticateToken(req, res, next) {
     next();
   });
 }
-
-const port = 5000;
-
-app.listen(port, () => `Server running on port ${port}`);
 
 // ********* USER TABLE *****
 // userID
@@ -591,3 +588,30 @@ app.post("/razorpay", async (req, res) => {
     console.log(error);
   }
 });
+
+app.post("/register", async (req, res) => {
+  try {
+    const doesUserExist = await User.exists({ username: req.body.username });
+
+    if (doesUserExist) {
+      res.status(409).send();
+    }
+    console.log("hello");
+
+    const usr = {
+      _id: new ObjectID(),
+      name: req.body.name,
+      username: req.body.username,
+      password: await bcrypt.hash(req.body.password, 10),
+    };
+    conn.collection("users").insertOne(usr);
+    res.status(201).send();
+  } catch (err) {
+    console.log(err);
+    res.status(500).send();
+  }
+});
+
+const port = 5000;
+
+app.listen(port, () => `Server running on port ${port}`);
