@@ -38,7 +38,7 @@ const styles = {
   },
 };
 
-function MyAppBar({isBg}) {
+function MyAppBar({ isBg }) {
   const navigate = useNavigate();
 
   const classes1 = useStyles();
@@ -72,7 +72,7 @@ function MyAppBar({isBg}) {
   };
 
   const handleCloseNavMenu = (e) => {
-    console.log(e.target.value)
+    console.log(e.target.value);
     setAnchorElNav(null);
     // navigate("/")
   };
@@ -82,12 +82,12 @@ function MyAppBar({isBg}) {
   };
 
   const logoutUser = () => {
-    localStorage.setItem("accessToken", null)
-    localStorage.setItem("refreshToken", null)
-  }
+    localStorage.setItem("accessToken", null);
+    localStorage.setItem("refreshToken", null);
+  };
 
   function handleMenuClickEvent(menuChoice) {
-    menuChoice === "Logout" && logoutUser()
+    menuChoice === "Logout" && logoutUser();
   }
   // const token = localStorage.getItem("accessToken");
   // if(token === null) {
@@ -95,7 +95,10 @@ function MyAppBar({isBg}) {
   // }
 
   return (
-    <div className={isBg ? classes1.header : ""} style={{ height: isBg? "50vw" : "0" }}>
+    <div
+      className={isBg ? classes1.header : ""}
+      style={{ height: isBg ? "50vw" : "0" }}
+    >
       <AppBar
         position="sticky"
         style={{
@@ -168,7 +171,9 @@ function MyAppBar({isBg}) {
             <img
               src={Icon}
               alt="logo"
-              onClick={() => {navigate("/")}}
+              onClick={() => {
+                navigate("/");
+              }}
               style={{
                 cursor: "pointer",
                 width: "120px",
@@ -181,7 +186,12 @@ function MyAppBar({isBg}) {
                 <Button
                   key={page}
                   // onChange={(e) => handleCloseNavMenu(e.target.value)}
-                  onClick={() => {navigate("/" + (page.toLowerCase() === "buy" ? "" : page.toLowerCase()))}}
+                  onClick={() => {
+                    navigate(
+                      "/" +
+                        (page.toLowerCase() === "buy" ? "" : page.toLowerCase())
+                    );
+                  }}
                   // onClick={handleCloseNavMenu}
                   sx={{
                     my: 2,
@@ -221,7 +231,13 @@ function MyAppBar({isBg}) {
               >
                 {settings.map((setting) => (
                   <MenuItem key={setting} onClick={handleCloseNavMenu}>
-                    <Typography value={setting} onClick={() => handleMenuClickEvent(setting)} textAlign="center">{setting}</Typography>
+                    <Typography
+                      value={setting}
+                      onClick={() => handleMenuClickEvent(setting)}
+                      textAlign="center"
+                    >
+                      {setting}
+                    </Typography>
                   </MenuItem>
                 ))}
               </Menu>

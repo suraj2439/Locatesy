@@ -12,6 +12,7 @@ const axios = require("axios");
 const path = require("path");
 const shortid = require("shortid");
 const Razorpay = require("razorpay");
+const { log } = require("console");
 
 let count = 0;
 
@@ -24,6 +25,7 @@ var conn = mongoose.connection;
 
 const app = express();
 
+app.use(cors());
 app.use(express.json());
 
 // var pwd = bcrypt.hash("sanket", 10);
@@ -286,22 +288,20 @@ let months = [
 ];
 
 function generateRandom(min = 0, max = 100) {
-
   // find diff
   let difference = max - min;
 
-  // generate random number 
+  // generate random number
   let rand = Math.random();
 
-  // multiply with difference 
-  rand = Math.floor( rand * difference);
+  // multiply with difference
+  rand = Math.floor(rand * difference);
 
-  // add with min value 
+  // add with min value
   rand = rand + min;
 
   return rand;
 }
-
 
 function getPropertyStatus() {
   return status[Math.floor(Math.random() * 4)];
@@ -498,21 +498,24 @@ app.post("/user", async (req, res) => {
 });
 
 //for first login
-app.post("/login", async (req, res) => {
+app.post("/login", cors(), async (req, res) => {
+  console.log();
   const checkUser = await conn
     .collection("users")
     .find({ username: req.body.username })
     .toArray((err, data) => {
-      if (err) {
+      if (err || data.length == 0) {
         console.log(err);
         res.status(403).send();
+        console.log("okkk");
+      } else {
+        console.log(data + "uuu");
+        const accessToken = jwt.sign(data[0], process.env.ACCESS_TOKEN, {
+          expiresIn: "60s",
+        });
+        const refreshToken = jwt.sign(data[0], process.env.REFRESH_TOKEN);
+        res.json({ accessToken: accessToken, refreshToken: refreshToken });
       }
-      console.log(data[0]);
-      const accessToken = jwt.sign(data[0], process.env.ACCESS_TOKEN, {
-        expiresIn: "60s",
-      });
-      const refreshToken = jwt.sign(data[0], process.env.REFRESH_TOKEN);
-      res.json({ accessToken: accessToken, refreshToken: refreshToken });
     });
 });
 
@@ -630,6 +633,37 @@ app.post("/register", async (req, res) => {
       password: await bcrypt.hash(req.body.password, 10),
     };
     conn.collection("users").insertOne(usr);
+    res.status(201).send();
+  } catch (err) {
+    console.log(err);
+    res.status(500).send();
+  }
+});
+
+app.post("/registerProperty", async (req, res) => {
+  try {
+    // const doesUserExist = await User.exists({ username: req.body.username });
+
+    // if (doesUserExist) {
+    //   res.status(409).send();
+    // }
+    console.log("hello");
+
+    const usr = {
+      _id: new ObjectID(),
+      name: req.body.name,
+      location: req.body.location,
+      propertyType: req.body.propertyType,
+      rooms: req.body.rooms,
+      priceRange: req.body.priceRange,
+      areaRange: req.body.areaRange,
+      areaType: req.body.areaType,
+      basePrice: req.body.basePrice,
+      descr: req.body.descr,
+      status: req.body.status,
+      possession: req.body.possession,
+    };
+    conn.collection("buy properties").insertOne(usr);
     res.status(201).send();
   } catch (err) {
     console.log(err);
