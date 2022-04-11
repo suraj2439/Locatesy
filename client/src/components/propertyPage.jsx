@@ -29,6 +29,8 @@ function loadPropertyData(setData, pageType) {
 }
 
 export default function propertyPage({pageType}) {
+  const bg = (pageType === "buy") ? true : false;
+
   const [propertyData, setPropertyData] = useState([])
 
   useEffect(() => {
@@ -37,8 +39,8 @@ export default function propertyPage({pageType}) {
 
   return (
     <div className="backGround">
-      <MyAppBar isBg={true}/>
-
+      <MyAppBar isBg={bg}/>
+      {bg ?  "" : <h1 style={{"marginTop" : "120px"}}></h1>}
       <Container sx={{ mt: "2rem" }} fixed>
         <Grid
           container

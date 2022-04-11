@@ -1,0 +1,82 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:weight@100;200;300;400;500;600;700;800&display=swap");
+/* E2DEA9 */
+body {
+    /* background-image: url("https://t3.ftcdn.net/jpg/03/19/00/58/360_F_319005824_sS4Tzx2QZ7WXqn8BP9yz0sFTyUnFEqbw.jpg");  */
+    background-color: white;
+    font-family: "Poppins", sans-serif;
+    font-weight: 300
+}
+
+.bgImg {
+    width: 100%;
+    height: 100vh;
+    background-size: cover;
+    position: absolute;
+    left: 0;
+}
+
+.container {
+    height: 100vh
+}
+
+.card {
+    width: 500px;
+    border: none;
+    /* border: 1px solid pink; */
+    border-radius: 15px;
+    padding: 8px;
+    background-color: #fff;
+    /* position: relative; */
+    padding-bottom: 40px;
+
+}
+
+.upper {
+    height: 100px
+}
+
+.upper img {
+    width: 100%;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px
+}
+
+.user {
+    position: relative
+}
+
+.profile img {
+    height: 80px;
+    width: 80px;
+    margin-top: 2px
+}
+
+.profile {
+    position: absolute;
+    top: -50px;
+    left: 38%;
+    height: 90px;
+    width: 90px;
+    border: 3px solid #fff;
+    border-radius: 50%
+}
+
+.follow {
+    border-radius: 15px;
+    padding-left: 20px;
+    padding-right: 20px;
+    height: 35px
+}
+
+.stats span {
+    font-size: 29px;
+}
+
+
+.tableUI {
+    width: 85%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 100px;
+    margin-top: 100px;
+}

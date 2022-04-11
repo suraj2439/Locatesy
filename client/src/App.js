@@ -9,37 +9,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import PropertyPage from "./components/propertyPage";
 import { NotFound } from "./components/NotFound";
 import SignUp from "./components/Signup";
-
-// class App extends Component {
-//   // componentDidMount () {
-//   //   const script = document.createElement("script");
-//   //   script.src = "https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false";
-//   //   script.async = true;
-//   //   document.body.appendChild(script);
-//   //   console.log("init add")
-//   // }
-
-//   render() {
-//     return (
-//       <div className="App">
-//         <Router>
-//           <Routes>
-//             <Route exact path="/" element={<PropertyPage pageType={"buy"}/> }></Route>
-//             <Route exact path="/rent" element={<PropertyPage pageType={"rent"}/> }></Route>
-//             <Route path="/login" element={<LoginPage />}></Route>
-//             <Route path="/indivproperty" element={<IndivProperty />}></Route>
-//             <Route path='*' element={<NotFound/>} />
-//           </Routes>
-//         </Router>
-        
-//       </div>
-//     );
-//   }
-// }
-
-// export default App;
-
-
+import Profile from "./components/Profile";
 
 export default function App() {
   return (
@@ -50,6 +20,7 @@ export default function App() {
           <Route exact path="/rent" element={<PropertyPage pageType={"rent"}/> }></Route>
           <Route path="/login" element={<LoginPage />}></Route>
           <Route exact path="/signup" element={<SignUp />}></Route>
+          <Route exact path="/profile" element={<Profile />}></Route>
           <Route path="/indivproperty" element={<IndivProperty />}></Route>
           <Route path='*' element={<NotFound/>} />
         </Routes>

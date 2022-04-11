@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundSize: "contain",
     width: "100%",
     height: "auto",
-    filter: "brightness(0.9)",
+    filter: "brightness(0.9)"
   },
 }));
 
@@ -84,10 +84,20 @@ function MyAppBar({isBg}) {
   const logoutUser = () => {
     localStorage.setItem("accessToken", null)
     localStorage.setItem("refreshToken", null)
+    localStorage.setItem("userName", null);
+  }
+
+  const showProfile = () => {
+    navigate("/profile");
   }
 
   function handleMenuClickEvent(menuChoice) {
-    menuChoice === "Logout" && logoutUser()
+    if(menuChoice == "Logout") {
+      logoutUser()
+      alert("User Logged Out.");
+
+    }
+    else if (menuChoice === "Profile") showProfile()
   }
   // const token = localStorage.getItem("accessToken");
   // if(token === null) {
@@ -105,27 +115,8 @@ function MyAppBar({isBg}) {
           opacity: "70%",
         }}
       >
-        <Container maxWidth="xl">
+        <Container maxWidth="xl" >
           <Toolbar disableGutters>
-            {/* <Typography
-            variant="h6" 
-            noWrap
-            component="div"
-            sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
-          >
-            LOGO
-          </Typography> */}
-            {/* <img src={Icon} alt='logo' style={{width:"120px", marginRight:"2rem"}}/> */}
-            {/* <Typography
-          
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
-          >
-            LOCATESY
-          </Typography> */}
-
             <Box
               sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}
               style={{ alignSelf: "start", color: "white" }}

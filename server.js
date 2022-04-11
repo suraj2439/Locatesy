@@ -46,14 +46,7 @@ const userSchema = new mongoose.Schema({
 
 const User = mongoose.model("User", userSchema);
 
-// const stud = new User({
-//   _id: 3,
-//   name: "suraj",
-//   username: "suraj",
-//   password: "1234"
-// });
-// stud.save().then(() => console.log("One entry added"));
-
+// all the properties which are given on rent
 const rentPropertySchema = new mongoose.Schema({
   p_id: Number, // property id
   link: String,
@@ -76,6 +69,7 @@ const rentPropertySchema = new mongoose.Schema({
 
 const rentProperty = mongoose.model("Rent Property", rentPropertySchema);
 
+// all the properties which are on sell(need to buy by other person)
 const buyPropertySchema = new mongoose.Schema({
   p_id: Number, // property id
   link: String,
@@ -98,6 +92,7 @@ const buyPropertySchema = new mongoose.Schema({
 
 const buyProperty = mongoose.model("Buy Property", buyPropertySchema);
 
+// all the propeties which are dealt (remove from buy properties and put here)
 const dealtPropertySchema = new mongoose.Schema({
   p_id: Number, // property id
   link: String,
@@ -120,6 +115,7 @@ const dealtPropertySchema = new mongoose.Schema({
 
 const dealtProperty = mongoose.model("Dealt Property", dealtPropertySchema);
 
+// properties which are taken on rent
 const rentedPropertySchema = new mongoose.Schema({
   p_id: Number, // property id
   link: String,
@@ -142,21 +138,36 @@ const rentedPropertySchema = new mongoose.Schema({
 
 const rentedProperty = mongoose.model("Rented Property", rentedPropertySchema);
 
+// prperty and seller relationship
 const sellSchema = new mongoose.Schema({
-  propertyId: Number,
-  userId: Number,
-  category: String,
+  p_id: Number,
+  userId: String,
+  category: String // rent or direct sold
 });
 
 const Sell = mongoose.model("Sell", sellSchema);
 
+// property and buyer relationship
 const buySchema = new mongoose.Schema({
-  propertyId: Number,
-  userId: Number,
-  category: String,
+  p_id: Number,
+  userId: String,
+  category: String // rent or direct bought
 });
 
 const buy = mongoose.model("Buy", buySchema);
+
+
+// let obj = {}
+//   obj["p_id"] = 17;
+//   obj["userId"] = "smy";
+//   obj["category"] = "buy";
+
+//   const buyP = new buy(obj);
+
+//   buyP
+//     .save()
+//     .then((res) => console.log("One entry added"))
+//     .catch((err) => console.log(err));
 
 csv = fs.readFileSync("./client/public/ldata.csv");
 var array = csv.toString().split("\r");
@@ -478,6 +489,50 @@ app.get("/rentproperties", (req, res) => {
     });
 });
 
+app.get("/profile", async (req, res) => {
+  let type = req.query.type
+  let endpt1, endpt2, condn;
+  if(type === "bought") {
+    endpt1 = "buys";
+    endpt2 = "buy properties";
+    condn = {category : "buy"}
+  }
+  else if(type === "sold") {
+    endpt1 = "sells";
+    endpt2 = "sell properties";
+    condn = {category : "sell"}
+  }
+  else if(type === "onrent") {
+    endpt1 = "sells";
+    endpt2 = "sell properties";
+    condn = {category : "rent"}
+  }
+  else if(type === "rented") {
+    endpt1 = "buys";
+    endpt2 = "buy properties";
+    condn = {category : "rent"}
+  }
+  else res.status(400).send()
+
+  conn
+    .collection(endpt1)
+    .find({ $and: [ {userId: req.query.userName}, condn]})
+    .project({p_id : 1, _id : 0})
+    .toArray(async (err, data) => {
+      let result = []
+      for(let i = 0; i < data.length; i++) {
+        let property = await conn
+          .collection(endpt2)
+          .findOne({p_id: data[i].p_id})
+          result.push([property.name, property.location, property.propertyType, property.rooms, property.areaType,
+              property.basePrice, property.possession])
+      }
+      res.json(result)
+    });
+});
+
+
+
 //for new user to register
 app.post("/user", async (req, res) => {
   try {
@@ -600,7 +655,6 @@ app.post("/razorpay", async (req, res) => {
     receipt: shortid.generate(),
     payment_capture,
   };
-  console.log("hiiii");
   try {
     const response = await razorpay.orders.create(options);
     console.log(response);

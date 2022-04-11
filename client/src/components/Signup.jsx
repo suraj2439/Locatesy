@@ -70,12 +70,14 @@ export default function SignUp() {
         const res = await axios.post("/login", loginObj);
         localStorage.setItem("accessToken", res.data.accessToken);
         localStorage.setItem("refreshToken", res.data.refreshToken);
+        localStorage.setItem("userName", userName);
         console.log("login success");
         navigate("/");
       } catch (err) {
         console.log("err");
         localStorage.setItem("accessToken", null);
         localStorage.setItem("refreshToken", null);
+        localStorage.setItem("userName", null);
       }
     } catch (err) {
       console.log(err);
