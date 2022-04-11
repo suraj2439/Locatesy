@@ -22,10 +22,12 @@ const useStyles = makeStyles((theme) => ({
     height: "100vh",
   },
   image: {
-    backgroundImage: "url(https://source.unsplash.com/random)",
+    // https://source.unsplash.com/random
+    backgroundImage:
+      "url(https://blog.ipleaders.in/wp-content/uploads/2018/12/real_estate.jpg)",
     backgroundRepeat: "no-repeat",
     backgroundSize: "cover",
-    backgroundPosition: "center",
+    backgroundPosition: "center right",
   },
   paper: {
     margin: theme.spacing(8, 4),
@@ -58,7 +60,7 @@ function LoginPage(props) {
     console.log(loginObj);
     console.log("begin");
     try {
-      const res = await axios.post("/login", loginObj);
+      const res = await axios.post("http://localhost:5000/login", loginObj);
       localStorage.setItem("accessToken", res.data.accessToken);
       localStorage.setItem("refreshToken", res.data.refreshToken);
       localStorage.setItem("userName", userName);
