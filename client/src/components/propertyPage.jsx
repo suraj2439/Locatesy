@@ -19,8 +19,8 @@ const Item = styled(Paper)(({ theme }) => ({
 
 function loadPropertyData(setData, pageType) {
   let endpoint = "";
-  if (pageType === "buy") endpoint = "/buyproperties";
-  else endpoint = "/rentproperties";
+  if (pageType === "buy") endpoint = "http://localhost:5000/buyproperties";
+  else endpoint = "http://localhost:5000/rentproperties";
 
   console.log(endpoint);
   // load property data according to type(buy or rent)
@@ -33,7 +33,7 @@ function loadPropertyData(setData, pageType) {
 }
 
 export default function propertyPage({ pageType }) {
-  const bg = (pageType === "buy") ? true : false;
+  const bg = pageType === "buy" ? true : false;
   const [propertyData, setPropertyData] = useState([]);
   const myRef = useRef(null);
 
@@ -48,8 +48,8 @@ export default function propertyPage({ pageType }) {
 
   return (
     <div className="backGround">
-      <MyAppBar isBg={bg}/>
-      {bg ?  "" : <h1 style={{"marginTop" : "120px"}}></h1>}
+      <MyAppBar isBg={bg} />
+      {bg ? "" : <h1 style={{ marginTop: "120px" }}></h1>}
       <Container sx={{ mt: "2rem" }} fixed id="properties" ref={myRef}>
         <Grid
           container

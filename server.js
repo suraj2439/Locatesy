@@ -144,7 +144,7 @@ const rentedProperty = mongoose.model("Rented Property", rentedPropertySchema);
 const sellSchema = new mongoose.Schema({
   p_id: Number,
   userId: String,
-  category: String // rent or direct sold
+  category: String, // rent or direct sold
 });
 
 const Sell = mongoose.model("Sell", sellSchema);
@@ -153,11 +153,10 @@ const Sell = mongoose.model("Sell", sellSchema);
 const buySchema = new mongoose.Schema({
   p_id: Number,
   userId: String,
-  category: String // rent or direct bought
+  category: String, // rent or direct bought
 });
 
 const buy = mongoose.model("Buy", buySchema);
-
 
 // let obj = {}
 //   obj["p_id"] = 17;
@@ -471,7 +470,7 @@ app.get("/property", authenticateToken, (req, res) => {
   res.json({ prize: "good" });
 });
 
-app.get("/buyproperties", (req, res) => {
+app.get("/buyproperties", cors(), (req, res) => {
   conn
     .collection("buy properties")
     .find()
@@ -480,7 +479,7 @@ app.get("/buyproperties", (req, res) => {
     });
 });
 
-app.get("/rentproperties", (req, res) => {
+app.get("/rentproperties", cors(), (req, res) => {
   conn
     .collection("rent properties")
     .find()
@@ -490,51 +489,56 @@ app.get("/rentproperties", (req, res) => {
 });
 
 app.get("/profile", async (req, res) => {
-  let type = req.query.type
+  let type = req.query.type;
   let endpt1, endpt2, condn;
-  if(type === "bought") {
+  if (type === "bought") {
     endpt1 = "buys";
     endpt2 = "buy properties";
-    condn = {category : "buy"}
-  }
-  else if(type === "sold") {
+    condn = { category: "buy" };
+  } else if (type === "sold") {
     endpt1 = "sells";
-    endpt2 = "sell properties";
-    condn = {category : "sell"}
-  }
-  else if(type === "onrent") {
+    endpt2 = "buy properties";
+    condn = { category: "sell" };
+  } else if (type === "onrent") {
     endpt1 = "sells";
-    endpt2 = "sell properties";
-    condn = {category : "rent"}
-  }
-  else if(type === "rented") {
+    endpt2 = "rent properties";
+    condn = { category: "rent" };
+  } else if (type === "rented") {
     endpt1 = "buys";
     endpt2 = "buy properties";
-    condn = {category : "rent"}
-  }
-  else res.status(400).send()
+    condn = { category: "rent" };
+  } else res.status(400).send();
+  console.log(endpt1, endpt2, condn, req.query.userName);
 
   conn
     .collection(endpt1)
-    .find({ $and: [ {userId: req.query.userName}, condn]})
-    .project({p_id : 1, _id : 0})
+    .find({ $and: [{ userId: req.query.userName }, condn] })
+    .project({ p_id: 1, _id: 0 })
     .toArray(async (err, data) => {
-      let result = []
-      for(let i = 0; i < data.length; i++) {
+      console.log(data);
+      let result = [];
+      for (let i = 0; i < data.length; i++) {
         let property = await conn
           .collection(endpt2)
-          .findOne({p_id: data[i].p_id})
-          result.push([property.name, property.location, property.propertyType, property.rooms, property.areaType,
-              property.basePrice, property.possession])
+          .findOne({ p_id: data[i].p_id });
+        console.log(property);
+        if (property !== null)
+          result.push([
+            property.name,
+            property.location,
+            property.propertyType,
+            property.rooms,
+            property.areaType,
+            property.basePrice,
+            property.possession,
+          ]);
       }
-      res.json(result)
+      res.json(result);
     });
 });
 
-
-
 //for new user to register
-app.post("/user", async (req, res) => {
+app.post("/user", cors(), async (req, res) => {
   try {
     console.log(req.body);
 
@@ -646,14 +650,14 @@ const razorpay = new Razorpay({
   key_secret: "KwtHRn68tCSXx1iJ1sexReC5",
 });
 
-app.post("/razorpay", async (req, res) => {
+app.post("/razorpay", cors(), async (req, res) => {
   console.log("hiiii");
-  const payment_capture = 1;
-  const amount = 1;
+  const payment_capture = 500;
+  const amount = 500;
   const currency = "INR";
   console.log("hiiii");
   const options = {
-    amount: 100,
+    amount: 50000,
     currency: currency,
     receipt: shortid.generate(),
     payment_capture,
@@ -671,7 +675,7 @@ app.post("/razorpay", async (req, res) => {
   }
 });
 
-app.post("/register", async (req, res) => {
+app.post("/register", cors(), async (req, res) => {
   try {
     const doesUserExist = await User.exists({ username: req.body.username });
 
@@ -694,7 +698,7 @@ app.post("/register", async (req, res) => {
   }
 });
 
-app.post("/registerProperty", async (req, res) => {
+app.post("/registerProperty", cors(), async (req, res) => {
   try {
     // const doesUserExist = await User.exists({ username: req.body.username });
 
@@ -702,8 +706,9 @@ app.post("/registerProperty", async (req, res) => {
     //   res.status(409).send();
     // }
     console.log("hello");
-
+    const pid = 4000 + Math.floor(Math.random() * 1000);
     const usr = {
+      p_id: pid,
       _id: new ObjectID(),
       name: req.body.name,
       location: req.body.location,
@@ -717,12 +722,33 @@ app.post("/registerProperty", async (req, res) => {
       status: req.body.status,
       possession: req.body.possession,
     };
+
+    const usrProp = {
+      p_id: pid,
+      userId: req.body.username,
+      category: req.body.type,
+    };
     conn.collection("buy properties").insertOne(usr);
+    conn.collection("sells").insertOne(usrProp);
     res.status(201).send();
   } catch (err) {
     console.log(err);
     res.status(500).send();
   }
+});
+
+app.post("/paymentdone", cors(), async (req, res) => {
+  console.log(req.body);
+  const obj = {
+    p_id: parseInt(req.query.p_id),
+    userId: req.query.un,
+    category: req.query.type,
+  };
+
+  conn.collection("buys").insertOne(obj);
+
+  res.redirect("http://127.0.0.1:3000/");
+  //res.sendStatus(200);
 });
 
 const port = 5000;

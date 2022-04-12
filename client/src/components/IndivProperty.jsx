@@ -33,7 +33,7 @@ export default function IndivProperty() {
   const { state } = useLocation();
   let propertyData = state.data;
   if (!propertyData) return <div>404 Not Found</div>;
-  console.log(propertyData["location"]);
+  console.log(propertyData);
 
   const [IsPaymentClicked, setIsPaymentClicked] = useState(false);
   const [isLocateClicked, setIsLocateClicked] = useState(false);
@@ -225,10 +225,20 @@ export default function IndivProperty() {
       name: "Donation",
       description: "Thank you for nothing",
       image: logo,
+      callback_url:
+        "http://localhost:5000/paymentdone?p_id=" +
+        propertyData["p_id"] +
+        "&un=" +
+        localStorage.getItem("userName") +
+        "&type=" +
+        state.type,
+      redirect: true,
       handler: function (response) {
-        alert(response.razorpay_payment_id);
-        alert(response.razorpay_order_id);
-        alert(response.razorpay_signature);
+        // alert(response.razorpay_payment_id);
+        // alert(response.razorpay_order_id);
+        // alert(response.razorpay_signature);
+        alert("Property is ready for you to buy.");
+        navigate("/");
         //setProgress(false);
       },
       prefill: {
@@ -240,6 +250,7 @@ export default function IndivProperty() {
     console.log("Heyyyiie");
     const paymentObject = new window.Razorpay(options);
     paymentObject.open();
+    navigate("/");
   }
 
   // propertyData = {"name" : "Parklane Lifeseasons", "propertyType" : "Residential Apartment", "rooms" : "2BHK",
@@ -282,10 +293,17 @@ export default function IndivProperty() {
       <div className="propertyDetails">
         <div className="price">
           <div className="priceRange">
-            <strong>{state.type === "buy" ? propertyData["priceRange"] + " " : "₹ " + Math.floor(propertyData["avgCostNumeric"])} </strong>/month
+            <strong>
+              {state.type === "buy"
+                ? propertyData["priceRange"] + " "
+                : "₹ " + Math.floor(propertyData["avgCostNumeric"])}{" "}
+            </strong>
+            /month
           </div>
-          <div className="basePrice"> 
-            {state.type === "buy" ? "(Base Price: rs. " + propertyData["basePrice"] + ")" : "(Deposit: rs. " + Math.floor(propertyData["basePrice"]) + ")"}
+          <div className="basePrice">
+            {state.type === "buy"
+              ? "(Base Price: rs. " + propertyData["basePrice"] + ")"
+              : "(Deposit: rs. " + Math.floor(propertyData["basePrice"]) + ")"}
           </div>
         </div>
 
@@ -312,8 +330,12 @@ export default function IndivProperty() {
         <Button
           onClick={(e) => {
             e.preventDefault();
-            setProgress(true);
-            setIsPaymentClicked(true);
+            if (localStorage.getItem("userName") !== null) {
+              setProgress(true);
+              setIsPaymentClicked(true);
+            } else {
+              navigate("/login");
+            }
           }}
           className="action"
           size="large"
