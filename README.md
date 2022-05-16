@@ -1,21 +1,42 @@
+<p align="center">
+ <img width=300px height=auto src="client/src/images/Icon.png" alt="logo"></a>
+</p>
 
-# LOCATESY : Property Management System
+<h3 align="center">Online Property Management System</h3>
 
-## Login Page :
+---
+
+<p align="center">The online real estate management system where people can buy, sell and rent
+their properties from anywhere to anybody at anytime.
+</p>
+
+## Objectives:
+- Real Estate agents or property owners can add property for selling or
+renting.
+- Users can buy property within few clicks.
+- Users who want properties on rent will find it easy since empty appartments will be available in just one click.
+- Making the process transperant and fast so it will not feel like a job!
+
+## Tech Stack:
+<img src="https://www.codeimmersives.com/wp-content/uploads/2018/06/MERN-Logo-4-pack.jpg" alt="tech-stack" />
+
+## Screenshots
+
+### Login Page :
 Login is required to Sell or Buy the property and to see the profile.
 
 ![Screenshot (504)](https://user-images.githubusercontent.com/69530002/163050941-4f4bfbee-e266-40d0-8dc0-5b6a28326e07.png)
 
 <br />
 
-## Signup Page : 
+### Signup Page : 
 User can create their account using Signup Page.
 
 ![Screenshot (505)](https://user-images.githubusercontent.com/69530002/163051142-dc9c46aa-c858-4320-8749-c220df459f52.png)
 
 <br />
 
-## Buy Tab :
+### Buy Tab :
 Anyone can see the Buy Tab which is also the home page of Locatesy.
 
 ![Screenshot (491)](https://user-images.githubusercontent.com/69530002/163052060-03abdda3-3f94-4701-9231-11037fd84757.png)
@@ -24,21 +45,21 @@ Anyone can see the Buy Tab which is also the home page of Locatesy.
 
 <br />
 
-## Sell Tab :
+### Sell Tab :
 Only authenticated users are allowed to put their properties on Sell.
 
 ![Screenshot (503)](https://user-images.githubusercontent.com/69530002/163052438-eb746674-a14f-4223-9784-ec850e08e0e3.png)
 
 <br />
 
-## Rent Tab :
+### Rent Tab :
 Anyone can see the properties which can be taken on rent. User can select the best fit property for rent.
 
 ![Screenshot (494)](https://user-images.githubusercontent.com/69530002/163052717-7cc2a5ef-ce4b-4b29-b2ef-8d38e7b62294.png)
 
 <br />
 
-## Individual Property View :
+### Individual Property View :
 On selecting the best fit property from Buy or Rent tab, the detailed description of the property can be seen in this section.
 
 ![Screenshot (495)](https://user-images.githubusercontent.com/69530002/163052918-6d53276e-ad4c-4e7c-a432-afc48c8bf1c0.png)
@@ -47,7 +68,7 @@ On selecting the best fit property from Buy or Rent tab, the detailed descriptio
 
 <br />
 
-## Payment Gateway : 
+### Payment Gateway : 
 For buying and taking property on rent user needs to pay Rs. 500 in the form of Service Charge.
 Payment Gateway is implemented using Razorpay API.
 
@@ -57,7 +78,7 @@ Payment Gateway is implemented using Razorpay API.
 
 <br />
 
-## Property Location(Map) :
+### Property Location(Map) :
 User can see the exact property location on the map.
 Map is implemented using MapMyIndia API.
 
@@ -65,7 +86,7 @@ Map is implemented using MapMyIndia API.
 
 <br />
 
-## User Profile Section :
+### User Profile Section :
 In this section user can see how many and which properties does user bought, sold, taken on rent and rented.
 
 ![Screenshot (500)](https://user-images.githubusercontent.com/69530002/163053832-0829ba99-730c-47d0-b7ff-a3fda1a99d1f.png)
@@ -79,12 +100,25 @@ In this section user can see how many and which properties does user bought, sol
 
 ## Usage:
 Mongodb should be installed on local machine
+
 Steps :
-1. git clone https://github.com/suraj2439/Locatesy.git
-2. npm i
-3. npm run dev
+
+1. Clone the project
+```
+git clone https://github.com/suraj2439/Locatesy.git
+```
+
+2. Installing dependancies
+```
+npm i
+```
+
+3. Run frontend and backend
+```
+npm run dev
+```
 
 
 ## Contributors
-- Suraj Machhindra Yerkal   <yerkal.suraj@gmail.com>
-- Sanket Ukhaji Khaire      <sanketkk9850@gmail.com>
+- <a href="https://github.com/Sanketkhaire">Sanket Khaire</a>
+- <a href="https://github.com/suraj2439">Suraj Yerkal</a>
